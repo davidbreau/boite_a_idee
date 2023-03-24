@@ -5,12 +5,13 @@ from django.contrib.auth.decorators import login_required
 from .forms import LogInForm, SignUpForm, SuggestionForm
 from django.contrib.auth import login, authenticate, logout
 from .models import Suggestion
-
+import datetime
 
 # Create your views here.
 @login_required
 def index(request):
-    return render(request, 'core/index.html')
+    suggestions = Suggestion.objects.all()
+    return render(request, 'core/index.html', {'suggestions':suggestions})
 
 def sign_up(request):
     form = SignUpForm()
@@ -56,9 +57,10 @@ def create_suggestion(request):
                 title = cd['title'],
                 description = cd['description'],
                 author = request.user,
-                date = cd['date']
+                date = datetime.datetime.now()
             )
             suggestion.save()
+            return redirect('index')
     else:
         form = SuggestionForm()
     return render(request, 'core/new_suggestion.html', context={'form':form})

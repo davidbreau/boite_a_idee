@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>
-</h1>
+    {% for suggestion in suggestions %}
+    {% csrf_token %}
+        <li>{{ suggestion.title }}</li>
+        <li>{{ suggestion.description }}</li>
+        <li>{{ suggestion.author }}</li>
+        <li>{{ suggestion.date}}</li>
+        {% endfor %}
 {% endblock content %}
