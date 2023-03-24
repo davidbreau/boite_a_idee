@@ -1,5 +1,5 @@
 {% load static %}
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +10,25 @@
 
 </head>
 <body>
+    <header class="site-header">
+        <div class="site-identity">
+          <h1><a href="#">SUGGESTION BOX {% if user.is_authenticated %}: {{ request.user.first_name|upper }} {% endif %} </a></h1>
+        </div>  
+        <nav class="site-navigation">
+
+          <ul class="nav">
+            <li><a href="{% url 'index' %}">HOME</a></li>
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign_up' %}">SIGN UP</a></li>
+            <li><a href="{% url 'log_in' %}">LOG IN</a></li>
+            {% endif %}
+            {% if user.is_authenticated %} 
+            <li><a href="{% url 'log_out' %}">LOG OUT</a></li>
+            {% endif %} 
+          </ul>
+        </nav>
+      </header>
+    <a href="{% url 'new' %}">SUGGEST</a>
     {% block content %}{% endblock content %}        
 </body>
 </html>
