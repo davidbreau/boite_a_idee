@@ -1,10 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
+
     {% for suggestion in suggestions %}
     {% csrf_token %}
-        <li>{{ suggestion.title }}</li>
-        <li>{{ suggestion.description }}</li>
-        <li>{{ suggestion.author }}</li>
-        <li>{{ suggestion.date}}</li>
+        <ul>
+            <li>{{ suggestion.title }}</li>
+            <li>{{ suggestion.description }}</li>
+            <li>{{ suggestion.author }}</li>
+            <li>{{ suggestion.date}}</li>
+        </ul>
+        <form method="post" action="{% url 'vote' pk=suggestion.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" >VOTE</button>
+        </form>
         {% endfor %}
+        {% for  in  %}{% endfor %}
 {% endblock content %}

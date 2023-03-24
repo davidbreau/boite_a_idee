@@ -16,3 +16,8 @@ class SignUpForm(UserCreationForm):
 class SuggestionForm(forms.Form):
     title = forms.CharField(max_length=100)
     description = forms.CharField(widget=forms.Textarea)
+    
+class VoteForm(forms.Form):
+    choices_vote = ((True,'GOOD IDEA'),(False,'NO'))
+    type_vote = forms.ChoiceField(choices=choices_vote, required=True)
+    # suggestion_id = forms.HiddenInput()

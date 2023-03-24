@@ -1,17 +1,37 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from .forms import LogInForm, SignUpForm, SuggestionForm
+from .forms import LogInForm, SignUpForm, SuggestionForm, VoteForm
 from django.contrib.auth import login, authenticate, logout
-from .models import Suggestion
+from .models import Suggestion, Vote
 import datetime
+
 
 # Create your views here.
 @login_required
 def index(request):
     suggestions = Suggestion.objects.all()
-    return render(request, 'core/index.html', {'suggestions':suggestions})
+    votes = Vote.objects.all()
+    form = VoteForm()
+    return render(request, 'core/index.html', context={'suggestions':suggestions, 'votes':votes, 'form':form})
+
+def vote(request, pk):
+    suggestions = Suggestion.objects.all()
+    form = VoteForm()
+    if request.method == 'POST':
+        form = VoteForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            vote = Vote(
+                suggestion = get_object_or_404(Suggestion, pk=pk),
+                author = request.user,
+                type_vote = cd['type_vote']
+            )
+            vote.save()
+            return render(request, 'core/index.html')
+    return render(request, 'core/index.html', context={'suggestions':suggestions, 'form':form})
+    
 
 def sign_up(request):
     form = SignUpForm()

@@ -9,7 +9,7 @@ class Suggestion(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
     description = models.TextField(max_length=300, null=False, blank=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
     
 class Vote(models.Model):
     suggestion = models.ForeignKey(Suggestion, on_delete=models.CASCADE)
